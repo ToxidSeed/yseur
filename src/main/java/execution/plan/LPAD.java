@@ -39,25 +39,27 @@ public class LPAD {
     }
 
     private void evalNextToken(Token token) throws Exception {
+        /**
+         * Si el Token ha sido absorvido por otro, no se procesa el siguiente ya que el parent de ser el caso
+         * lo hará
+         * */
+        if(token.getParent() != null){
+            return;
+        }
+        /**
+         * Se obtiene el siguiente token a procesar
+         * */
         Token nextToken = treeFactory.getNextToken(token);
+        /**
+         * Si el siguiente token es nulo quiere decir que no hay mas que evaluar
+         * */
+
         if(nextToken == null){
             return;
         }
-
-        List<Integer> expectedTokens = new ArrayList<Integer>();
-        expectedTokens.add(Token.OPERATOR_CONCAT);
-        expectedTokens.add(Token.RPAREN);
-        expectedTokens.add(Token.COLON);
-        expectedTokens.add(Token.EQUAL);
-        expectedTokens.add(Token.NOTEQUAL);
-        expectedTokens.add(Token.GREATER_THAN);
-        expectedTokens.add(Token.GREATER_THAN_OR_EQUAL);
-        expectedTokens.add(Token.LESS_THAN);
-        expectedTokens.add(Token.LESS_THAN_OR_EQUAL);
-        if(!expectedTokens.contains(nextToken.getType())){
-            String exMessage = String.format("Token %s inesperado cerca de %s",nextToken.getValue(), token.getValue());
-            throw new Exception(exMessage);
-        }
+        /**
+         * Si el token se encuentra en la siguiente lista de tokens se tiene que evaluar para identificar su resultado
+         * */
 
         List<Integer> toEvalTokens = new ArrayList<Integer>();
         toEvalTokens.add(Token.OPERATOR_CONCAT);
@@ -69,7 +71,7 @@ public class LPAD {
     private void evalLParen(Token token) throws Exception {
         Token lparenToken = treeFactory.getNextToken(token);
         if(lparenToken.getType() != Token.LPAREN){
-            String ex_message = String.format("Invalid execution.plan.Token %s",lparenToken.getValue());
+            String ex_message = String.format("Invalid Token %s",lparenToken.getValue());
             throw new Exception(ex_message);
         }
         treeFactory.removeFromTree(lparenToken);
@@ -108,7 +110,7 @@ public class LPAD {
     private Token evalPad(Token token) throws Exception {
         Token padToken = treeFactory.getNextToken(token);
         if(padToken.getType() != Token.STRING_LITERAL){
-            String ex_message = String.format("Invalid execution.plan.Token %s",padToken.getValue());
+            String ex_message = String.format("Se esperana una cadena y se ha obtenido %s",padToken.getValue());
             throw new Exception(ex_message);
         }
         mainToken.addChild(padToken);

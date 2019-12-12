@@ -19,7 +19,7 @@ public class TRIMTest {
             Lexor tokenizer = new Lexor();
             tokenizer.setScript("TRIM(CAMPO1)");
             tokenizer.parse();
-            tokenizer.printListToken();
+            //tokenizer.printListToken();
             TokenTreeFactory tokenTreeFactory = new TokenTreeFactory();
             tokenTreeFactory.setListToken(tokenizer.getTokenList());
             tokenTreeFactory.make();
@@ -40,7 +40,7 @@ public class TRIMTest {
             Lexor tokenizer = new Lexor();
             tokenizer.setScript("TRIM(TRIM(CAMPO1))");
             tokenizer.parse();
-            tokenizer.printListToken();
+            //tokenizer.printListToken();
             TokenTreeFactory tokenTreeFactory = new TokenTreeFactory();
             tokenTreeFactory.setListToken(tokenizer.getTokenList());
             tokenTreeFactory.make();
@@ -67,7 +67,7 @@ public class TRIMTest {
             Lexor tokenizer = new Lexor();
             tokenizer.setScript("TRIM(LPAD(CAMPO1,12,'.'))");
             tokenizer.parse();
-            tokenizer.printListToken();
+            //tokenizer.printListToken();
             TokenTreeFactory tokenTreeFactory = new TokenTreeFactory();
             tokenTreeFactory.setListToken(tokenizer.getTokenList());
             tokenTreeFactory.make();
@@ -101,7 +101,7 @@ public class TRIMTest {
             Lexor tokenizer = new Lexor();
             tokenizer.setScript("TRIM(' STRING_LITERAL')");
             tokenizer.parse();
-            tokenizer.printListToken();
+            //tokenizer.printListToken();
             TokenTreeFactory tokenTreeFactory = new TokenTreeFactory();
             tokenTreeFactory.setListToken(tokenizer.getTokenList());
             tokenTreeFactory.make();
@@ -126,7 +126,7 @@ public class TRIMTest {
             Lexor tokenizer = new Lexor();
             tokenizer.setScript("TRIM( 3322222)");
             tokenizer.parse();
-            tokenizer.printListToken();
+            //tokenizer.printListToken();
             TokenTreeFactory tokenTreeFactory = new TokenTreeFactory();
             tokenTreeFactory.setListToken(tokenizer.getTokenList());
             tokenTreeFactory.make();
@@ -141,4 +141,27 @@ public class TRIMTest {
         }
     }
 
+    /**
+     * TRIM
+     * NUMERIC_LITERAL
+     * */
+    @Test
+    public void makeBranch_trim_aux() throws  Exception{
+        try{
+            Lexor tokenizer = new Lexor();
+            tokenizer.setScript("TRIM(LPAD(CO_EMPRESA,5,'0')||LPAD(CO_PRODUCTO,5,'0')||LPAD(CO_CONTRATO,17,'0')||LPAD(CO_COND_ESPECIA,12,'.'))");
+            tokenizer.parse();
+            //tokenizer.printListToken();
+            TokenTreeFactory tokenTreeFactory = new TokenTreeFactory();
+            tokenTreeFactory.setListToken(tokenizer.getTokenList());
+            tokenTreeFactory.make();
+            tokenTreeFactory.printTokensTree();
+            Token rootToken = tokenTreeFactory.listToken.get(0);
+            assertEquals(Token.FUNCTION_TRIM,rootToken.getType());
+
+        }catch(Exception ex){
+            ex.printStackTrace();
+            fail();
+        }
+    }
 }

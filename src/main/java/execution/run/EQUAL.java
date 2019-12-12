@@ -1,19 +1,16 @@
 package execution.run;
 import execution.plan.Token;
 
+import java.util.ArrayList;
 import java.util.List;
-public class EQUAL {
-    private Token mainToken;
-    public void run(Token token) throws Exception {
-        this.mainToken = token;
-        if(token.getType() != Token.EQUAL){
-            String exMessage = String.format("Token inesperado %s",token.getValue());
-            throw new Exception(exMessage);
-        }
-        this.evalBranch();
+public class EQUAL extends RunnerBase{
+
+
+    public EQUAL() {
+        super(Token.EQUAL);
     }
 
-    private void evalBranch(){
+    protected void evalBranch(){
         List<Token> arguments = this.mainToken.getChilds();
 
         //Primer argumento es un string
@@ -26,11 +23,13 @@ public class EQUAL {
         String response = this.make(leftStringExpression, rightStringExpression);
 
         //Eliminar hojas
-        this.mainToken.setChilds(null);
-        this.mainToken.setType(Token.RESPONSE);
-        this.mainToken.setValue(response);
+        this.setResponse(response);
     }
     private String make(Object left, Object right){
+        if(left == null || right == null){
+            return "false";
+        }
+
         if(left.equals(right)){
             return "true";
         }else{

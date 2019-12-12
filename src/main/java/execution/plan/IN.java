@@ -10,16 +10,30 @@ public class IN extends TreeBase{
 
     public void makeBranch(Token INToken) throws Exception {
         this.mainToken = INToken;
+        referenceToken = INToken;
         /**
          * Obtenemos el ancestro para ubicar el siguiente token a revisar dado que este puede haber sido absorvido
          * el padre solo sirve como referencia para buscar al siguiente token que no ha sido procesado
          * */
-        Token parentToken = INToken.getRootParent();
-        if(parentToken == null){
+        /*Token rootParent = INToken.getRootParent();
+        if(rootParent == null){
             referenceToken = INToken;
+        }else{
+            referenceToken = rootParent;
+        }*/
+        /**
+         * Obtenemos el padre inmediato para identificar si es una negacion (NOT),
+         * si no es asi se absorbe el roken previo
+         * */
+        Token parentToken = INToken.getParent();
+        if(parentToken == null){
+            Token prevToken = treeFactory.getPrevToken(referenceToken);
+            this.addChild(prevToken);
         }else{
             referenceToken = parentToken;
         }
+
+
         Token nextToken = treeFactory.getNextToken(referenceToken);
         /**
          * A partir de este punto se tiene que empezar a buscar la lista de valores a evaluar

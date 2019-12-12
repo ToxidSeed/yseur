@@ -45,8 +45,11 @@ public class OR extends TreeBase{
         this.evalAsExpression(expressionToken);
 
         Token comparisonOperatorToken = treeFactory.getNextToken(referenceToken);
-        if(!TreeBase.isOperatorComparison(comparisonOperatorToken)){
-            String exMessage = String.format("Se esperaba un operador de comparación %s",comparisonOperatorToken.getValue());
+        if(!TreeBase.isOperatorComparison(comparisonOperatorToken) &&
+                !TreeBase.isSpecOperatorComparison(comparisonOperatorToken) &&
+                comparisonOperatorToken.getType() != Token.NOT
+        ){
+            String exMessage = String.format("Se esperaba un operador de comparación y se encontró %s",comparisonOperatorToken.getValue());
             throw new Exception(exMessage);
         }
         treeFactory.evaluate(comparisonOperatorToken);
@@ -60,14 +63,18 @@ public class OR extends TreeBase{
             this.addChild(comparisonOperatorToken);
             return;
         }
-        /**Revisamos si el siguiente token es una clausula de cierre como puede ser THEN,
+        /**Revisamos si el siguiente token es una clausula de cierre THEN u otro OR
          * de ser el caso agregamos el child como definitivo y no como referencia
          * */
-        if(nextLogicalToken.getType() == Token.THEN){
+        if(
+                nextLogicalToken.getType() == Token.THEN ||
+                        nextLogicalToken.getType() == Token.OR
+        ){
             this.addChild(comparisonOperatorToken);
         }else{
             /**Solo se agrega como referencia para posteriormente asignar las objetos finales
              * */
+            comparisonOperatorToken.setSkip(true);
             mainToken.addChildAsReference(comparisonOperatorToken);
         }
     }

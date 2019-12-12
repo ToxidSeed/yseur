@@ -12,41 +12,212 @@ import static org.junit.Assert.assertEquals;
 
 public class NotEqualTest {
     /**
-     Prueba de operador diferente
-     1.- STRING_LITERAL
-     2.- !=
-     3.- STRING_LITERAL
+     FIELD != FIELD
      **/
     @Test
     public void makeBranch_lit_diff_lit() throws  Exception{
         Lexor tokenizer = new Lexor();
-        tokenizer.setScript("'059' != '059'");
+        tokenizer.setScript("FIELD != FIELD1");
         tokenizer.parse();
         TokenTreeFactory tokenTreeFactory = new TokenTreeFactory();
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.make();
-        tokenTreeFactory.printTokensTree();
-        int tokenType = tokenTreeFactory.getExecutionPlan().get(0).getType();
-        assertEquals(Token.NOTEQUAL,tokenType);
+        //tokenTreeFactory.printTokensTree();
+        Token notEqual = tokenTreeFactory.getExecutionPlan().get(0);
+        assertEquals(Token.NOTEQUAL,notEqual.getType());
+
+        Token field1 = tokenTreeFactory.getExecutionPlan().get(0).getChilds().get(0);
+        assertEquals(Token.FIELD,field1.getType());
+
+        Token field2 = tokenTreeFactory.getExecutionPlan().get(0).getChilds().get(1);
+        assertEquals(Token.FIELD,field2.getType());
     }
 
     /**
-     Prueba de operador igual
-     1.- CAMPO
-     2.- !=
-     3.- STRING_LITERAL
+     FIELD != STRING_LITERAL
      **/
     @Test
-    public void makeBranch_field_diff_lit() throws  Exception{
+    public void makeBranch_field_dif_str_lit() throws  Exception{
         Lexor tokenizer = new Lexor();
-        tokenizer.setScript("CO_EMPRESA != '20'");
+        tokenizer.setScript("FIELD != 'STRING_LITERAL'");
         tokenizer.parse();
         TokenTreeFactory tokenTreeFactory = new TokenTreeFactory();
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.make();
-        tokenTreeFactory.printTokensTree();
-        int tokenType = tokenTreeFactory.getExecutionPlan().get(0).getType();
-        assertEquals(Token.NOTEQUAL,tokenType);
+        //tokenTreeFactory.printTokensTree();
+        Token notEqual = tokenTreeFactory.getExecutionPlan().get(0);
+        assertEquals(Token.NOTEQUAL,notEqual.getType());
+
+        Token field1 = tokenTreeFactory.getExecutionPlan().get(0).getChilds().get(0);
+        assertEquals(Token.FIELD,field1.getType());
+
+        Token field2 = tokenTreeFactory.getExecutionPlan().get(0).getChilds().get(1);
+        assertEquals(Token.STRING_LITERAL,field2.getType());
+    }
+
+    /**
+     FIELD != NUMERIC_LITERAL
+     **/
+    @Test
+    public void makeBranch_field_dif_num_lit() throws  Exception{
+        Lexor tokenizer = new Lexor();
+        tokenizer.setScript("FIELD != 25533");
+        tokenizer.parse();
+        TokenTreeFactory tokenTreeFactory = new TokenTreeFactory();
+        tokenTreeFactory.setListToken(tokenizer.getTokenList());
+        tokenTreeFactory.make();
+        //tokenTreeFactory.printTokensTree();
+        Token notEqual = tokenTreeFactory.getExecutionPlan().get(0);
+        assertEquals(Token.NOTEQUAL,notEqual.getType());
+
+        Token field1 = tokenTreeFactory.getExecutionPlan().get(0).getChilds().get(0);
+        assertEquals(Token.FIELD,field1.getType());
+
+        Token field2 = tokenTreeFactory.getExecutionPlan().get(0).getChilds().get(1);
+        assertEquals(Token.NUMERIC_LITERAL,field2.getType());
+    }
+
+    /**
+     FIELD != TRIM
+     **/
+    @Test
+    public void makeBranch_field_dif_trim() throws  Exception{
+        Lexor tokenizer = new Lexor();
+        tokenizer.setScript("FIELD != TRIM(FIELD1)");
+        tokenizer.parse();
+        TokenTreeFactory tokenTreeFactory = new TokenTreeFactory();
+        tokenTreeFactory.setListToken(tokenizer.getTokenList());
+        tokenTreeFactory.make();
+        //tokenTreeFactory.printTokensTree();
+        Token notEqual = tokenTreeFactory.getExecutionPlan().get(0);
+        assertEquals(Token.NOTEQUAL,notEqual.getType());
+
+        Token field1 = notEqual.getChilds().get(0);
+        assertEquals(Token.FIELD,field1.getType());
+
+        Token trim = notEqual.getChilds().get(1);
+        assertEquals(Token.FUNCTION_TRIM,trim.getType());
+
+        Token field2 = notEqual.getChilds().get(1).getChilds().get(0);
+        assertEquals(Token.FIELD,field2.getType());
+    }
+
+    /**
+     FIELD != LPAD
+     **/
+    @Test
+    public void makeBranch_field_dif_lpad() throws  Exception{
+        Lexor tokenizer = new Lexor();
+        tokenizer.setScript("FIELD != LPAD(FIELD1,5,'.')");
+        tokenizer.parse();
+        TokenTreeFactory tokenTreeFactory = new TokenTreeFactory();
+        tokenTreeFactory.setListToken(tokenizer.getTokenList());
+        tokenTreeFactory.make();
+        //tokenTreeFactory.printTokensTree();
+        Token notEqual = tokenTreeFactory.getExecutionPlan().get(0);
+        assertEquals(Token.NOTEQUAL,notEqual.getType());
+
+        Token field1 = notEqual.getChilds().get(0);
+        assertEquals(Token.FIELD,field1.getType());
+
+        Token trim = notEqual.getChilds().get(1);
+        assertEquals(Token.FUNCTION_LPAD,trim.getType());
+
+        Token field2 = notEqual.getChilds().get(1).getChilds().get(0);
+        assertEquals(Token.FIELD,field2.getType());
+
+        Token num_lit = notEqual.getChilds().get(1).getChilds().get(1);
+        assertEquals(Token.NUMERIC_LITERAL,num_lit.getType());
+
+        Token str_lit = notEqual.getChilds().get(1).getChilds().get(2);
+        assertEquals(Token.STRING_LITERAL,str_lit.getType());
+    }
+
+    /**
+     FIELD != CONCAT
+     **/
+    @Test
+    public void makeBranch_field_dif_concat() throws  Exception{
+        Lexor tokenizer = new Lexor();
+        tokenizer.setScript("FIELD != FIELD1||FIELD2");
+        tokenizer.parse();
+        TokenTreeFactory tokenTreeFactory = new TokenTreeFactory();
+        tokenTreeFactory.setListToken(tokenizer.getTokenList());
+        tokenTreeFactory.make();
+        //tokenTreeFactory.printTokensTree();
+        Token notEqual = tokenTreeFactory.getExecutionPlan().get(0);
+        assertEquals(Token.NOTEQUAL,notEqual.getType());
+
+        Token field1 = notEqual.getChilds().get(0);
+        assertEquals(Token.FIELD,field1.getType());
+
+        Token trim = notEqual.getChilds().get(1);
+        assertEquals(Token.OPERATOR_CONCAT,trim.getType());
+
+        Token conact_field1 = notEqual.getChilds().get(1).getChilds().get(0);
+        assertEquals(Token.FIELD,conact_field1.getType());
+
+        Token conact_field2 = notEqual.getChilds().get(1).getChilds().get(1);
+        assertEquals(Token.FIELD,conact_field2.getType());
+    }
+
+    /**
+     FIELD != NVL
+     **/
+    @Test
+    public void makeBranch_field_dif_nvl() throws  Exception{
+        Lexor tokenizer = new Lexor();
+        tokenizer.setScript("FIELD != NVL(FIELD1,'.')");
+        tokenizer.parse();
+        TokenTreeFactory tokenTreeFactory = new TokenTreeFactory();
+        tokenTreeFactory.setListToken(tokenizer.getTokenList());
+        tokenTreeFactory.make();
+        //tokenTreeFactory.printTokensTree();
+        Token notEqual = tokenTreeFactory.getExecutionPlan().get(0);
+        assertEquals(Token.NOTEQUAL,notEqual.getType());
+
+        Token field1 = notEqual.getChilds().get(0);
+        assertEquals(Token.FIELD,field1.getType());
+
+        Token trim = notEqual.getChilds().get(1);
+        assertEquals(Token.NVL,trim.getType());
+
+        Token nvl_field = notEqual.getChilds().get(1).getChilds().get(0);
+        assertEquals(Token.FIELD,nvl_field.getType());
+
+        Token nvl_replace = notEqual.getChilds().get(1).getChilds().get(1);
+        assertEquals(Token.STRING_LITERAL,nvl_replace.getType());
+    }
+
+    /**
+     FIELD != SUBSTR
+     **/
+    @Test
+    public void makeBranch_field_dif_substr() throws  Exception{
+        Lexor tokenizer = new Lexor();
+        tokenizer.setScript("FIELD != SUBSTR(FIELD1,2,5)");
+        tokenizer.parse();
+        TokenTreeFactory tokenTreeFactory = new TokenTreeFactory();
+        tokenTreeFactory.setListToken(tokenizer.getTokenList());
+        tokenTreeFactory.make();
+        //tokenTreeFactory.printTokensTree();
+        Token notEqual = tokenTreeFactory.getExecutionPlan().get(0);
+        assertEquals(Token.NOTEQUAL,notEqual.getType());
+
+        Token field1 = notEqual.getChilds().get(0);
+        assertEquals(Token.FIELD,field1.getType());
+
+        Token trim = notEqual.getChilds().get(1);
+        assertEquals(Token.SUBSTR,trim.getType());
+
+        Token substr_field = notEqual.getChilds().get(1).getChilds().get(0);
+        assertEquals(Token.FIELD,substr_field.getType());
+
+        Token substr_start = notEqual.getChilds().get(1).getChilds().get(1);
+        assertEquals(Token.NUMERIC_LITERAL,substr_start.getType());
+
+        Token substr_length = notEqual.getChilds().get(1).getChilds().get(2);
+        assertEquals(Token.NUMERIC_LITERAL,substr_length.getType());
     }
 
     /**
@@ -63,7 +234,7 @@ public class NotEqualTest {
         TokenTreeFactory tokenTreeFactory = new TokenTreeFactory();
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.make();
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         int tokenType = tokenTreeFactory.getExecutionPlan().get(0).getType();
         assertEquals(Token.NOTEQUAL,tokenType);
     }
@@ -83,11 +254,11 @@ public class NotEqualTest {
             TokenTreeFactory tokenTreeFactory = new TokenTreeFactory();
             tokenTreeFactory.setListToken(tokenizer.getTokenList());
             tokenTreeFactory.make();
-            tokenTreeFactory.printTokensTree();
+            //tokenTreeFactory.printTokensTree();
             int tokenType = tokenTreeFactory.getExecutionPlan().get(0).getType();
             assertEquals(Token.NOTEQUAL,tokenType);
         }catch(Exception ex){
-            assertEquals("Se esperaba una expresion pero se encontro != cerca de !=",ex.getMessage());
+            assertEquals("Se esperaba una expresion pero se encontró != cerca de !=",ex.getMessage());
         }
     }
 
@@ -107,11 +278,11 @@ public class NotEqualTest {
             TokenTreeFactory tokenTreeFactory = new TokenTreeFactory();
             tokenTreeFactory.setListToken(tokenizer.getTokenList());
             tokenTreeFactory.make();
-            tokenTreeFactory.printTokensTree();
+            //tokenTreeFactory.printTokensTree();
             int tokenType = tokenTreeFactory.getExecutionPlan().get(0).getType();
             assertEquals(Token.NOTEQUAL,tokenType);
         }catch(Exception ex){
-            assertEquals("Se esperaba una expresion pero se encontro = cerca de !=",ex.getMessage());
+            assertEquals("Se esperaba una expresion pero se encontró = cerca de !=",ex.getMessage());
         }
     }
 
@@ -130,7 +301,7 @@ public class NotEqualTest {
             TokenTreeFactory tokenTreeFactory = new TokenTreeFactory();
             tokenTreeFactory.setListToken(tokenizer.getTokenList());
             tokenTreeFactory.make();
-            tokenTreeFactory.printTokensTree();
+            //tokenTreeFactory.printTokensTree();
             int tokenType = tokenTreeFactory.getExecutionPlan().get(0).getType();
             assertEquals(Token.NOTEQUAL,tokenType);
         }catch(Exception ex){
@@ -153,7 +324,7 @@ public class NotEqualTest {
             TokenTreeFactory tokenTreeFactory = new TokenTreeFactory();
             tokenTreeFactory.setListToken(tokenizer.getTokenList());
             tokenTreeFactory.make();
-            tokenTreeFactory.printTokensTree();
+            //tokenTreeFactory.printTokensTree();
             int tokenType = tokenTreeFactory.getExecutionPlan().get(0).getType();
             assertEquals(Token.NOTEQUAL,tokenType);
         }catch (Exception ex){
@@ -177,7 +348,7 @@ public class NotEqualTest {
             TokenTreeFactory tokenTreeFactory = new TokenTreeFactory();
             tokenTreeFactory.setListToken(tokenizer.getTokenList());
             tokenTreeFactory.make();
-            tokenTreeFactory.printTokensTree();
+            //tokenTreeFactory.printTokensTree();
             int tokenType = tokenTreeFactory.getExecutionPlan().get(0).getType();
             assertEquals(Token.NOTEQUAL,tokenType);
         }catch (Exception ex){
@@ -211,7 +382,7 @@ public class NotEqualTest {
         TokenTreeFactory tokenTreeFactory = new TokenTreeFactory();
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.make();
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         //Verificando que devuelva 1
         assertEquals(1, tokenTreeFactory.listToken.size());
 
@@ -244,7 +415,7 @@ public class NotEqualTest {
         TokenTreeFactory tokenTreeFactory = new TokenTreeFactory();
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.make();
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         //Verificando que devuelva 1
         assertEquals(1, tokenTreeFactory.listToken.size());
 
@@ -277,7 +448,7 @@ public class NotEqualTest {
         TokenTreeFactory tokenTreeFactory = new TokenTreeFactory();
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.make();
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         //Verificando que devuelva 1
         assertEquals(1, tokenTreeFactory.listToken.size());
 
@@ -311,7 +482,7 @@ public class NotEqualTest {
         TokenTreeFactory tokenTreeFactory = new TokenTreeFactory();
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.make();
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         //Verificando que devuelva 1
         assertEquals(1, tokenTreeFactory.listToken.size());
 

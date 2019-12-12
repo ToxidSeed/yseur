@@ -2,21 +2,18 @@ package execution.run;
 
 import execution.plan.Token;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class LPAD {
-    private Token mainToken;
-    public void run(Token token) throws Exception {
-        this.mainToken = token;
-        if(token.getType() != Token.FUNCTION_LPAD){
-            String exMessage = String.format("Token inesperado %s",token.getValue());
-            throw new Exception(exMessage);
-        }
-        this.evalBranch();
+public class LPAD extends RunnerBase{
+
+
+    public LPAD() {
+        super(Token.FUNCTION_LPAD);
     }
 
     //LPAD tiene 3 argumentos, si no tiene 3 valores debe devolver error
-    private void evalBranch(){
+    protected void evalBranch(){
         List<Token> arguments = this.mainToken.getChilds();
 
         //Primer argumento es un string
@@ -32,13 +29,15 @@ public class LPAD {
         String response = this.makePad(stringExpression, length, stringPad);
 
         //Eliminar hojas
-        this.mainToken.setChilds(null);
-        this.mainToken.setType(Token.RESPONSE);
-        this.mainToken.setValue(response);
+        this.setResponse(response);
     }
 
     //make LPAD
     private String makePad(String stringExpression, int length, String stringPad){
+        if(stringExpression == null){
+            return null;
+        }
+
         if (stringExpression.length() >= length) {
             return stringExpression;
         }

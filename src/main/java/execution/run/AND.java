@@ -1,19 +1,17 @@
 package execution.run;
 import execution.plan.Token;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class AND {
-    private Token mainToken;
-    public void run(Token token) throws Exception {
-        this.mainToken = token;
-        if(token.getType() != Token.AND){
-            String exMessage = String.format("Token inesperado %s",token.getValue());
-            throw new Exception(exMessage);
-        }
-        this.evalBranch();
+public class AND extends RunnerBase{
+
+
+    public AND() {
+        super(Token.AND);
     }
-    private void evalBranch(){
+
+    protected void evalBranch(){
         List<Token> arguments = this.mainToken.getChilds();
 
         //primer argumento es un booleano almacenado como un string
@@ -26,9 +24,7 @@ public class AND {
         String response = this.make(leftBoolean, rightBoolean);
 
         //Eliminar hojas
-        this.mainToken.setChilds(null);
-        this.mainToken.setType(Token.RESPONSE);
-        this.mainToken.setValue(response);
+        this.setResponse(response);
     }
 
     private String make(Boolean left, Boolean right){

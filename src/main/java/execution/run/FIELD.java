@@ -11,6 +11,19 @@ public class FIELD {
             throw new Exception(exMessage);
         }
         this.mainToken.setType(Token.RESPONSE);
-        this.mainToken.setValue(record.getValue(mainToken.getValue()).toString());
+
+        Object recordValue;
+        try{
+            recordValue = record.getValue(mainToken.getValue());
+        }catch(IllegalArgumentException ex){
+            String exMessage = String.format("La columna %s no existe",mainToken.getValue());
+            throw new IllegalArgumentException(exMessage);
+        }
+        if(recordValue == null){
+            this.mainToken.setValue(null);
+        }else{
+            String fieldValue = recordValue.toString();
+            this.mainToken.setValue(fieldValue);
+        }
     }
 }

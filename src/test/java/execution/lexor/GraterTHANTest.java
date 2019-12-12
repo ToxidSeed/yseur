@@ -13,7 +13,7 @@ public class GraterTHANTest {
         Lexor lexor = new Lexor();
         lexor.setScript(">");
         GreaterTHAN.findToken(lexor,lexor.getCurrentChar());
-        lexor.printListToken();
+        //lexor.printListToken();
         int tokenType = lexor.getTokenList().get(0).getType();
         assertEquals(tokenType, Token.GREATER_THAN);
     }
@@ -27,7 +27,7 @@ public class GraterTHANTest {
         Lexor lexor = new Lexor();
         lexor.setScript(">=");
         GreaterTHAN.findToken(lexor,lexor.getCurrentChar());
-        lexor.printListToken();
+        //lexor.printListToken();
         int tokenType = lexor.getTokenList().get(0).getType();
         assertEquals(tokenType, Token.GREATER_THAN_OR_EQUAL);
     }
@@ -40,7 +40,7 @@ public class GraterTHANTest {
         Lexor lexor = new Lexor();
         lexor.setScript(">A");
         GreaterTHAN.findToken(lexor,lexor.getCurrentChar());
-        lexor.printListToken();
+        //lexor.printListToken();
         int tokenType = lexor.getTokenList().get(0).getType();
         assertEquals(tokenType, Token.GREATER_THAN);
     }

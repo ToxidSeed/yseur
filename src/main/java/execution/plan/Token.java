@@ -3,18 +3,24 @@ package execution.plan;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Token {
+public class Token implements Cloneable{
     private Token parent = null;
     private int type = 0;
     private String value = "";
+    private boolean skip = false;
     private List<Token> childs = new ArrayList<Token>();
 
-    Token(){
-
-    }
     public Token(int type, String value){
         this.type = type;
         this.value = value;
+    }
+
+    public boolean isSkip() {
+        return skip;
+    }
+
+    public void setSkip(boolean skip) {
+        this.skip = skip;
     }
 
     public Token getParent() {
@@ -92,15 +98,23 @@ public class Token {
         this.childs.set(index,token);
     }
 
+    public void resetChilds(){
+        this.childs = new ArrayList<Token>();
+    }
+
 
     public void addChild(Token token){
         token.setParent(this);
         this.childs.add(token);
     }
+
+    public void removeChild(int index){
+        this.childs.remove(index);
+    }
+
     public void addChildAsReference(Token token){
         this.childs.add(token);
     }
-
 
 
     public Token getRootParent(){
@@ -118,5 +132,10 @@ public class Token {
             rootParent = nextParent;
         }
         return rootParent;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

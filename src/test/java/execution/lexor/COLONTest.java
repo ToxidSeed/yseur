@@ -13,7 +13,7 @@ public class COLONTest {
         Lexor lexor = new Lexor();
         lexor.setScript(",");
         COLON.findToken(lexor,lexor.getCurrentChar());
-        lexor.printListToken();
+        //lexor.printListToken();
         int tokenType = lexor.getTokenList().get(0).getType();
         assertEquals(tokenType, Token.COLON);
     }
@@ -26,7 +26,7 @@ public class COLONTest {
         Lexor lexor = new Lexor();
         lexor.setScript(" ,");
         COLON.findToken(lexor,lexor.getCurrentChar());
-        lexor.printListToken();
+        //lexor.printListToken();
         int tokenType = lexor.getTokenList().get(0).getType();
         assertEquals(tokenType, Token.COLON);
     }
@@ -40,7 +40,7 @@ public class COLONTest {
         Lexor lexor = new Lexor();
         lexor.setScript(" , ");
         COLON.findToken(lexor,lexor.getCurrentChar());
-        lexor.printListToken();
+        //lexor.printListToken();
         int tokenType = lexor.getTokenList().get(0).getType();
         assertEquals(tokenType, Token.COLON);
     }
@@ -53,7 +53,7 @@ public class COLONTest {
         Lexor lexor = new Lexor();
         lexor.setScript(",A");
         COLON.findToken(lexor,lexor.getCurrentChar());
-        lexor.printListToken();
+        //lexor.printListToken();
         int tokenType = lexor.getTokenList().get(0).getType();
         assertEquals(tokenType, Token.COLON);
     }
@@ -66,7 +66,7 @@ public class COLONTest {
         Lexor lexor = new Lexor();
         lexor.setScript(",3");
         COLON.findToken(lexor,lexor.getCurrentChar());
-        lexor.printListToken();
+        //lexor.printListToken();
         int tokenType = lexor.getTokenList().get(0).getType();
         assertEquals(tokenType, Token.COLON);
     }
@@ -79,7 +79,7 @@ public class COLONTest {
         Lexor lexor = new Lexor();
         lexor.setScript(",,");
         COLON.findToken(lexor,lexor.getCurrentChar());
-        lexor.printListToken();
+        //lexor.printListToken();
         int tokenType = lexor.getTokenList().get(0).getType();
         assertEquals(tokenType, Token.COLON);
     }

@@ -6,6 +6,7 @@ public class TokenTreeFactory {
     List<Token> listToken = new ArrayList<Token>();
     List<Integer> expectedTypes = new ArrayList<Integer>();
     List<Integer> literals = new ArrayList<Integer>();
+    StringBuilder stringTree = new StringBuilder();
     int currentIndex = 0;
 
     public TokenTreeFactory(){
@@ -79,29 +80,80 @@ public class TokenTreeFactory {
     }
 
     public void make() throws Exception {
-        Token token = null;
-        boolean firstToken = true;
         boolean lastToken = false;
-        while(this.listToken.size() > 1 && !lastToken){
-            if(firstToken){
-                token = this.getFirstToken();
-                this.evaluate(token);
-                firstToken = false;
+        Token token;
+        if(this.listToken.size() > 0){
+            token = this.listToken.get(0);
+            this.evaluate(token);
+        }else{
+            throw new Exception("No se tienen tokens para analizar");
+        }
+
+        while(this.listToken.size() > 1){
+            Token reference;
+            if(token.getRootParent() == null){
+                reference = token;
+            }else{
+                reference = token.getRootParent();
+            }
+            token = this.getNextToken(reference);
+
+            /**
+             * Si el siguiente token es null, quiere decir que ya no hay mas token que analizar
+             * por lo que se sale del loop
+             * */
+            if(token == null){
+                break;
+            }
+
+            /**
+             * Solo para los casos donde interviene el OR se guarda un
+             * indicador para determinar si ya ha sido evaluado y se tiene que proceder a
+             * analizar el siguiente token
+             * */
+            if(token.isSkip()){
                 continue;
             }
-            token = this.getNextToken(token);
             this.evaluate(token);
-            if(isLastToken(token)){
-                lastToken = true;
-            }
+        }
+
+        /**
+         * AL final de procesar, si el script es correcto solo
+         * debe quedar una lista con un solo token base o
+         * tokens sin referencia por lo que en se tienen que referenciar
+         * */
+        this.linkAllReferences();
+    }
+
+    private void linkAllReferences(){
+        for(Token token: this.listToken){
+            this.linkReferences(token, token.getChilds());
+        }
+    }
+
+    protected void linkReferences(Token parent, List<Token> tokenList){
+        for(Token token: tokenList){
+            int index = tokenList.indexOf(token);
+            this.link(index,parent, token);
+        }
+    }
+
+    private void link(int index,Token parent, Token token ){
+        if(parent != token.getParent()){
+            Token rootParent = token.getRootParent();
+            parent.setChild(index, rootParent);
+            this.removeFromTree(rootParent);
+            this.linkReferences(rootParent, rootParent.getChilds());
+        }else{
+            this.linkReferences(token, token.getChilds());
         }
     }
 
     public void makeRoot() throws Exception{
         Token firstToken = this.getNextToken();
         this.evalExpectedTokens(firstToken);
-        Token root = this.getRoot(firstToken);
-        this.evaluate(root);
+        this.getRoot(firstToken);
+        this.make();
     }
 
     private void evalExpectedTokens(Token token) throws Exception {
@@ -217,13 +269,11 @@ public class TokenTreeFactory {
                 whenClause.makeBranch(token);
                 break;
             case Token.THEN:
-                THEN thenClause = new THEN();
-                thenClause.setObjFactory(this);
+                THEN thenClause = new THEN(this);
                 thenClause.makeBranch(token);
                 break;
             case Token.ELSE:
-                ELSE elseClause = new ELSE();
-                elseClause.setTreeFactory(this);
+                ELSE elseClause = new ELSE(this);
                 elseClause.makeBranch(token);
                 break;
             case Token.FUNCTION_LPAD:
@@ -232,14 +282,20 @@ public class TokenTreeFactory {
                 lpadFuntion.makeBranch(token);
                 break;
             case Token.FUNCTION_TRIM:
-                TRIM trimFuntion = new TRIM();
-                trimFuntion.setTreeFactory(this);
+                TRIM trimFuntion = new TRIM(this);
                 trimFuntion.makeBranch(token);
                 break;
             case Token.OPERATOR_CONCAT:
-                CONCAT concatFunction = new CONCAT();
-                concatFunction.setObjFactory(this);
+                CONCAT concatFunction = new CONCAT(this);
                 concatFunction.makeBranch(token);
+                break;
+            case Token.SUBSTR:
+                SUBSTR substrParser = new SUBSTR(this);
+                substrParser.makeBranch(token);
+                break;
+            case Token.NVL:
+                NVL nvlParser = new NVL(this);
+                nvlParser.makeBranch(token);
                 break;
             default:
                 break;
@@ -256,7 +312,7 @@ public class TokenTreeFactory {
         for(int i = 0; i<listToken.size();i++){
             token = listToken.get(i);
             textToPrint = String.format("%s %s",currentLevel, token.getValue());
-            System.out.println(textToPrint);
+            stringTree.append(textToPrint+"\n");
             if(token.getChilds().size()>0){
                 nextLevel = currentLevel + " | ";
                 this.printTokensTree(token.getChilds(), nextLevel);
@@ -265,7 +321,7 @@ public class TokenTreeFactory {
         }
     }
     public void printTokensTree(){
-        List<Token> listTokens = this.listToken;
         this.printTokensTree(listToken,"");
+        System.out.println(stringTree);
     }
 }

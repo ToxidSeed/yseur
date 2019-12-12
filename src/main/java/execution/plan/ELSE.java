@@ -1,15 +1,9 @@
 package execution.plan;
 
-public class ELSE {
-    private TokenTreeFactory treeFactory;
-    private Token mainToken;
+public class ELSE extends TreeBase{
 
-    public TokenTreeFactory getTreeFactory() {
-        return treeFactory;
-    }
-
-    public void setTreeFactory(TokenTreeFactory treeFactory) {
-        this.treeFactory = treeFactory;
+    public ELSE(TokenTreeFactory treeFactory) {
+        super(treeFactory);
     }
 
     public void makeBranch(Token elseToken) throws Exception{
@@ -18,17 +12,15 @@ public class ELSE {
     }
     public void getStringExpression() throws Exception {
         Token stringExpression = treeFactory.getNextToken(mainToken);
+        if(stringExpression == null){
+            String exMessage = "Se esperaba una expresión al finalizar el script";
+            throw new Exception(exMessage);
+        }
+        if(!TreeBase.isExpression(stringExpression)){
+            String exMessage = "Se esperaba una expresión después de ELSE";
+            throw new Exception(exMessage);
+        }
         treeFactory.evaluate(stringExpression);
         this.addChild(stringExpression);
-    }
-    public void addChild(Token child){
-        Token childToAdd;
-        if(child.getRootParent() != null){
-            childToAdd = child.getRootParent();
-        }else{
-            childToAdd = child;
-        }
-        treeFactory.removeFromTree(childToAdd);
-        this.mainToken.addChild(childToAdd);
     }
 }

@@ -4,18 +4,12 @@ import execution.plan.Token;
 
 import java.util.List;
 
-public class WHEN {
-    private Token mainToken;
-    public void run(Token token) throws Exception {
-        this.mainToken = token;
-        if(token.getType() != Token.WHEN){
-            String exMessage = String.format("Token inesperado %s",token.getValue());
-            throw new Exception(exMessage);
-        }
-        this.evalBranch();
+public class WHEN extends RunnerBase{
+    public WHEN(){
+        super(Token.WHEN);
     }
 
-    private void evalBranch(){
+    protected void evalBranch(){
         List<Token> arguments = this.mainToken.getChilds();
 
         //Primer argumento es un booleano
@@ -28,7 +22,7 @@ public class WHEN {
         this.make(leftBoolean, right);
 
         //Eliminar hojas
-        this.mainToken.setChilds(null);
+        this.mainToken.resetChilds();
     }
     private void make(Object left, Object right){
         if(Boolean.parseBoolean(left.toString())){

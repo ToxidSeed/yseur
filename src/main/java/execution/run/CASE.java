@@ -2,19 +2,16 @@ package execution.run;
 
 import execution.plan.Token;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class CASE {
-    private Token mainToken;
-    public void run(Token token) throws Exception {
-        this.mainToken = token;
-        if(token.getType() != Token.CASE){
-            String exMessage = String.format("Token inesperado %s",token.getValue());
-            throw new Exception(exMessage);
-        }
-        this.evalBranch();
+public class CASE extends RunnerBase{
+
+    public CASE() {
+        super(Token.CASE);
     }
-    private void evalBranch(){
+
+    protected void evalBranch(){
         List<Token> arguments = this.mainToken.getChilds();
 
         String response = null;
@@ -24,9 +21,7 @@ public class CASE {
                 break;
             }
         }
-        //Eliminar hojas
-        this.mainToken.setChilds(null);
-        this.mainToken.setType(Token.RESPONSE);
-        this.mainToken.setValue(response);
+        //setear respuesta
+        this.setResponse(response);
     }
 }

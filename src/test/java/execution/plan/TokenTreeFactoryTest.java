@@ -20,7 +20,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.CASE,rootToken.getType());
     }
 
@@ -36,7 +36,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.CASE,rootToken.getType());
     }
     @Test
@@ -52,7 +52,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.CASE,rootToken.getType());
     }
 
@@ -67,7 +67,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -82,7 +82,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -97,7 +97,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -112,7 +112,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -127,7 +127,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -142,7 +142,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -157,7 +157,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -172,7 +172,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -187,7 +187,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -206,7 +206,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -222,7 +222,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -238,7 +238,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -253,7 +253,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -268,7 +268,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -283,7 +283,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -301,7 +301,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -319,7 +319,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -337,7 +337,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -355,7 +355,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -373,7 +373,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -391,7 +391,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -409,7 +409,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -427,7 +427,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -445,7 +445,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -463,7 +463,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -481,7 +481,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -499,7 +499,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -514,7 +514,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 
@@ -529,7 +529,7 @@ public class TokenTreeFactoryTest {
         tokenTreeFactory.setListToken(tokenizer.getTokenList());
         tokenTreeFactory.makeRoot();
         rootToken = tokenTreeFactory.listToken.get(0);
-        tokenTreeFactory.printTokensTree();
+        //tokenTreeFactory.printTokensTree();
         assertEquals(Token.RESULT,rootToken.getType());
     }
 }

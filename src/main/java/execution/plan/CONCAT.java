@@ -3,39 +3,37 @@ package execution.plan;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CONCAT {
-    private TokenTreeFactory treeFactory;
-    private Token mainToken;
-
-    public void setObjFactory(TokenTreeFactory treeFactory) {
-        this.treeFactory = treeFactory;
+public class CONCAT extends TreeBase{
+    public CONCAT(TokenTreeFactory treeFactory) {
+        super(treeFactory);
     }
+
     public void makeBranch(Token concatToken) throws Exception {
         this.mainToken = concatToken;
         this.addParameters(concatToken);
     }
     public void addParameters(Token token) throws Exception {
         this.addLeftParameter(mainToken);
+
+        //El siguiente token se evalua como expresion
         this.addRightParameter(mainToken);
     }
-    private void addLeftParameter(Token token){
+
+    private void addLeftParameter(Token token) throws Exception {
         Token leftParameter = treeFactory.getPrevToken(token);
-        addChild(leftParameter);
-    }
-    private void addRightParameter(Token token) throws Exception {
-        Token rightParameter = treeFactory.getNextToken(token);
-        List<Integer> expectedTokens = new ArrayList<Integer>();
-        expectedTokens.add(Token.FIELD);
-        expectedTokens.add(Token.NUMERIC_LITERAL);
-        expectedTokens.add(Token.STRING_LITERAL);
-        expectedTokens.add(Token.FUNCTION_TRIM);
-        expectedTokens.add(Token.FUNCTION_LPAD);
-        if(!expectedTokens.contains(rightParameter.getType())){
-            String exMessage = String.format("Unexpected execution.plan.Token %s",rightParameter.getType());
+        if(leftParameter == null){
+            String exMessage = "Se esperaba una expresión antes del operador ||";
             throw new Exception(exMessage);
         }
-        treeFactory.evaluate(rightParameter);
-        this.addChild(rightParameter);
+        addChild(leftParameter);
+    }
+    private void addRightParameter(Token token) throws Exception{
+        Token expToken = treeFactory.getNextToken(mainToken);
+        if(expToken == null){
+            String exMessage = "Se esperaba una expresión después del operador ||";
+            throw new Exception(exMessage);
+        }
+        this.evalStringExpression(token);
     }
 
     public void addChild(Token child){

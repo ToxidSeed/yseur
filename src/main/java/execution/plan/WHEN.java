@@ -21,25 +21,6 @@ public class WHEN extends TreeBase{
         this.evalAsLogicalOperator();
     }
 
-    private void linkReferences(Token parent, List<Token> tokenList){
-        for(Token token: tokenList){
-            int index = tokenList.indexOf(token);
-            this.link(index,parent, token);
-        }
-    }
-
-    private void link(int index,Token parent, Token token ){
-        if(parent != token.getParent()){
-            Token rootParent = token.getRootParent();
-            parent.setChild(index, rootParent);
-            treeFactory.removeFromTree(rootParent);
-            this.linkReferences(rootParent, rootParent.getChilds());
-        }else{
-            this.linkReferences(token, token.getChilds());
-        }
-
-
-    }
 
     private void evalAsCondition() throws Exception{
         Token leftExpressionToken = treeFactory.getNextToken(referenceToken);
@@ -54,18 +35,24 @@ public class WHEN extends TreeBase{
         referenceToken = leftExpressionToken;
         this.evalAsExpression(leftExpressionToken);
 
-
+        /**
+         * Se obtiene el siguiente token que presumiblemente es un operador de comparación
+         * =, !=, >, >=, <, <=
+         * */
         Token comparisonToken = treeFactory.getNextToken(referenceToken);
         referenceToken = comparisonToken;
-        this.evalAsComparisonOperator(comparisonToken);
-
         /**
-         * No se evalua el operando del lado derecho porque los operadores de comparacion lo absorven mientras procesa
+         * Si el siguiente token es un NOT se evalúa el NOT
          * */
+        if(comparisonToken.getType() == Token.NOT){
+            treeFactory.evaluate(comparisonToken);
+        }else{
+            this.evalAsComparisonOperator(comparisonToken);
+        }
     }
 
     private void evalAsComparisonOperator(Token comparisonToken) throws Exception {
-        if(isOperatorComparison(comparisonToken)){
+        if(isOperatorComparison(comparisonToken) || isSpecOperatorComparison(comparisonToken)){
             treeFactory.evaluate(comparisonToken);
         }
     }
@@ -112,13 +99,17 @@ public class WHEN extends TreeBase{
             if(logicalOperator.getType() == Token.AND){
                 referenceToken = logicalOperator;
             }
+            this.evalAsLogicalOperator();
         }
-        this.evalAsLogicalOperator();
     }
 
 
     private void evalAsThen() throws Exception {
         Token thenToken = treeFactory.getNextToken(referenceToken);
+        if(thenToken.getType() != Token.THEN){
+            String exMessage = String.format("Se esperaba THEN y se encontró %s",thenToken.getValue());
+            throw new Exception(exMessage);
+        }
         treeFactory.evaluate(thenToken);
         this.addThenToken(thenToken);
     }

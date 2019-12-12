@@ -19,5 +19,6 @@ public class RESULT {
         Token token = arguments.get(0);
         this.mainToken.setType(Token.RESPONSE);
         this.mainToken.setValue(token.getValue());
+        this.mainToken.resetChilds();
     }
 }

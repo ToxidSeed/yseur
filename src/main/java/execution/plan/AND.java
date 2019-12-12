@@ -16,15 +16,15 @@ public class AND extends TreeBase{
         this.evalAsLeftOperand(leftOperandToken);
 
         /**
-         * Para evaluar el operando del lado derecho se evalua como una condicion xs
-         *
-         * s
+         * Para evaluar el operando del lado derecho se evalua como una condicion
          * */
         this.evalAsCondition();
     }
+
+
     private void evalAsLeftOperand(Token token) throws Exception {
         if(token.getChilds().size() == 0){
-            String exMessage = String.format("Se ha encontrado un error al generar el token previo %s",token.getValue());
+            String exMessage = String.format("La definicion de %s no se encuentra correctamente formada",token.getValue());
             throw new Exception(exMessage);
         }
         this.addChild(token);
@@ -35,7 +35,7 @@ public class AND extends TreeBase{
         }
 
         if(!TreeBase.isExpression(token)){
-            String exMessage = String.format("Se ha encontrado %s no valido para la expresion",token.getValue());
+            String exMessage = String.format("Se ha encontrado la definición %s no valida cerca de AND",token.getValue());
             throw new Exception(exMessage);
         }
         treeFactory.evaluate(token);
@@ -47,8 +47,14 @@ public class AND extends TreeBase{
         this.evalAsExpression(expressionToken);
 
         Token comparisonOperatorToken = treeFactory.getNextToken(referenceToken);
-        if(!TreeBase.isOperatorComparison(comparisonOperatorToken)){
-            String exMessage = String.format("Se esperaba un operador de comparación %s",comparisonOperatorToken.getValue());
+        /**
+         *Se verifica que la condicion del lado derecho cumpla lo
+         * con que sea comparacion: =, !=, >, <, >= <=, NOT, IN, LIK
+         * */
+        if(!TreeBase.isOperatorComparison(comparisonOperatorToken)
+                && comparisonOperatorToken.getType() != Token.NOT
+        && !TreeBase.isSpecOperatorComparison(comparisonOperatorToken)){
+            String exMessage = String.format("Se esperaba un operador de comparación =, !=, >, <, >= <=, NOT, IN o LIKE y se ha encontrado %s",comparisonOperatorToken.getValue());
             throw new Exception(exMessage);
         }
         treeFactory.evaluate(comparisonOperatorToken);

@@ -2,10 +2,14 @@ package execution.run;
 
 import com.ibm.is.cc.javastage.api.InputRecord;
 import execution.lexor.Lexor;
+import execution.plan.Token;
 import execution.plan.TokenTreeFactory;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -136,5 +140,33 @@ public class RunnerTest {
         assertEquals("XXXXXXX4.055555",value);
     }
 
+    @Test
+    public void executeTest_trim() throws Exception {
+        Lexor tokenizer = new Lexor();
+        tokenizer.setScript("LPAD(CO_EMPRESA,5,'0')");
+        tokenizer.parse();
+
+        TokenTreeFactory tokenTreeFactory = new TokenTreeFactory();
+        tokenTreeFactory.setListToken(tokenizer.getTokenList());
+        tokenTreeFactory.makeRoot();
+        Runner objRunner = new Runner();
+        objRunner.setExecutionPlan(tokenTreeFactory.getExecutionPlan());
+
+        InputRecord record = mock(InputRecord.class);
+        Mockito.when(record.getValue("CO_EMPRESA")).thenReturn("0").thenReturn("1");
+        objRunner.setInputRecord(record);
+
+        String value = objRunner.execute();
+        assertEquals("00000",value);
+
+        Runner newRunner = new Runner();
+        newRunner.setExecutionPlan(tokenTreeFactory.getExecutionPlan());
+        newRunner.setInputRecord(record);
+
+        String value2 =  newRunner.execute();
+        assertEquals("00001",value2);
+
+
+    }
 
 }

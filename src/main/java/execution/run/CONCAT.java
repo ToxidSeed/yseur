@@ -2,20 +2,15 @@ package execution.run;
 
 import execution.plan.Token;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class CONCAT {
-    private Token mainToken;
-    public void run(Token token) throws Exception {
-        this.mainToken = token;
-        if(token.getType() != Token.OPERATOR_CONCAT){
-            String exMessage = String.format("Token inesperado %s",token.getValue());
-            throw new Exception(exMessage);
-        }
-        this.evalBranch();
+public class CONCAT extends RunnerBase{
+    public CONCAT(){
+        super(Token.OPERATOR_CONCAT);
     }
 
-    private void evalBranch(){
+    protected void evalBranch(){
         List<Token> arguments = this.mainToken.getChilds();
 
         //Primer argumento es un string
@@ -28,12 +23,13 @@ public class CONCAT {
         String response = this.make(leftStringExpression, rightStringExpression);
 
         //Eliminar hojas
-        this.mainToken.setChilds(null);
-        this.mainToken.setType(Token.RESPONSE);
-        this.mainToken.setValue(response);
+        this.setResponse(response);
     }
     private String make(String leftStringExpression, String rightStringExpression  ){
-        String response = String.format("%s%s",leftStringExpression,rightStringExpression);
-        return response;
+        if(leftStringExpression == null || rightStringExpression == null){
+            return null;
+        }
+        return  String.format("%s%s",leftStringExpression,rightStringExpression);
+
     }
 }

@@ -16,7 +16,7 @@ public class LexorTest {
                 "WHEN CAMPO3 != 'LETRA' OR TRIM(CAMPO4) = 34 THEN 56" +
                 "ELSE 655");
         testLexor.parse();
-        testLexor.printListToken();
+        //tokenizer.printListToken();
 
         int tokenType1 = testLexor.getTokenList().get(0).getType();
         assertEquals(Token.WHEN, tokenType1);

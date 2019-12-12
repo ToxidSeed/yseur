@@ -4,18 +4,14 @@ import execution.plan.Token;
 
 import java.util.List;
 
-public class OR {
-    private Token mainToken;
-    public void run(Token token) throws Exception {
-        this.mainToken = token;
-        if(token.getType() != Token.OR){
-            String exMessage = String.format("Token inesperado %s",token.getValue());
-            throw new Exception(exMessage);
-        }
-        this.evalBranch();
+public class OR extends RunnerBase{
+
+
+    public OR() {
+        super(Token.OR);
     }
 
-    private void evalBranch(){
+    protected void evalBranch(){
         List<Token> arguments = this.mainToken.getChilds();
 
         //primer argumento es un booleano almacenado como un string
@@ -28,9 +24,7 @@ public class OR {
         String response = this.make(leftBoolean, rightBoolean);
 
         //Eliminar hojas
-        this.mainToken.setChilds(null);
-        this.mainToken.setType(Token.RESPONSE);
-        this.mainToken.setValue(response);
+        this.setResponse(response);
     }
 
     private String make(Boolean left, Boolean right){

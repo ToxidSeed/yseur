@@ -20,6 +20,14 @@ public class FIELD {
     private void evalNextToken(Token token) throws Exception {
         Token nextToken = treeFactory.getNextToken(token);
         /**
+         * Si el token se encuentra en la siguiente lista de tokens debe desencadebar una excepcion
+         * */
+        if(this.isUnexpectedToken(nextToken)){
+            String exMessage = String.format("Definición %s inesperada después de %s",nextToken.getValue(),token.getValue());
+            throw new Exception(exMessage);
+        }
+
+        /**
          * Si el token se encuentra en la siguiente lista de tokens se tiene que evaluar para identificar su resultado
          * */
         List<Integer> toEvalTokens = new ArrayList<Integer>();
@@ -37,5 +45,17 @@ public class FIELD {
             rootParent = token;
         }
         return treeFactory.isLastToken(rootParent);
+    }
+
+    private boolean isUnexpectedToken(Token token){
+        if(token.getType() == Token.OPERATOR_CONCAT){
+            return false;
+        }else{
+            /**
+             * Aunque en isExpression se verifica también OPERATOR_CONCAT no se tendría en cuenta dado que es excluyente
+             * con la parte del if
+             * */
+            return TreeBase.isExpression(token);
+        }
     }
 }

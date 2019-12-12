@@ -9,13 +9,20 @@ public class LIKE extends TreeBase{
         mainToken = likeToken;
         referenceToken = this.getReferenceToken(likeToken);
         /**
-         * Si el like tiene un token hijo se entiende que otro proceso previo lo ha agregado por lo que no
-         * es necesario evaluar el operador izquierdo y colo se evalua el operador derecho
+         * Si ningun proceso previo a agregado el token se procede a absorber la expresion derecha
          * */
-        if(likeToken.getChilds().size() == 1){
-            this.evalAsPattern();
+        if(likeToken.getChilds().size() == 0){
+            this.addLeftOperand();
         }
+
+        this.evalAsPattern();
     }
+
+    private void addLeftOperand(){
+        Token leftExpression = treeFactory.getPrevToken(referenceToken);
+        this.addChild(leftExpression);
+    }
+
     private void evalAsPattern() throws Exception {
         Token patternToken = treeFactory.getNextToken(referenceToken);
         if(patternToken.getType() != Token.STRING_LITERAL){

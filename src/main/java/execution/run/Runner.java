@@ -7,21 +7,70 @@ import com.ibm.is.cc.javastage.api.InputRecord;
 
 public class Runner {
     private List<Token> executionPlan = new ArrayList<Token>();
+    private List<Token> originalPlan = new ArrayList<Token>();
     private InputRecord inputRecord;
+    private StringBuilder stringTree = new StringBuilder();
 
-    public void setExecutionPlan(List<Token> executionPlan) {
-        this.executionPlan = executionPlan;
+    public void setExecutionPlan(List<Token> executionPlan) throws CloneNotSupportedException {
+        this.originalPlan = executionPlan;
+        this.executionPlan = createExecutionPlanCopy(executionPlan);
     }
 
     public void setInputRecord(InputRecord inputRecord) {
         this.inputRecord = inputRecord;
     }
 
+
+
     public String execute() throws Exception {
-        this.valExecutionPlan();
-        Token root = executionPlan.get(0);
-        this.evalLeaf(root);
-        return root.getValue();
+        /**
+         * Para propositos de debug
+         * */
+        stringTree = new StringBuilder();
+        String originalTree = tokenTreeAsString(executionPlan,"");
+        try{
+            this.valExecutionPlan();
+            Token root = executionPlan.get(0);
+            this.evalLeaf(root);
+            return root.getValue();
+        }catch(IllegalArgumentException ex){
+            throw new IllegalArgumentException(ex.getMessage());
+        }catch(Exception ex){
+            stringTree = new StringBuilder();
+            String stringTree = tokenTreeAsString(executionPlan,"");
+            String exceptionMessage = ex.getMessage();
+            if(exceptionMessage == null){
+                exceptionMessage = "null";
+            }
+            String exMessage = String.format("Excepcion %s\nArbol de ejecución original\n%sArbol de ejecucion \n%s ",exceptionMessage, originalTree, stringTree);
+            throw new RuntimeException(exMessage);
+        }
+
+    }
+
+
+
+    private List<Token> createExecutionPlanCopy(List<Token> initialList) throws CloneNotSupportedException {
+        List<Token> copiedList = this.copyBranch(initialList);
+        return copiedList;
+    }
+
+    private List<Token> copyBranch(List<Token> tokenList) throws CloneNotSupportedException {
+
+        List<Token> responseList = new ArrayList<Token>();
+
+        for(Token token:tokenList){
+            if(token.getChilds().size() == 0){
+                Token copiedToken = (Token)token.clone();
+                responseList.add(copiedToken);
+            }else{
+                List<Token> newChilds = this.copyBranch(token.getChilds());
+                Token copiedToken = (Token)token.clone();
+                copiedToken.setChilds(newChilds);
+                responseList.add(copiedToken);
+            }
+        }
+        return responseList;
     }
 
     private void valExecutionPlan() throws Exception {
@@ -75,6 +124,14 @@ public class Runner {
                 CONCAT concatRunner = new CONCAT();
                 concatRunner.run(token);
                 break;
+            case Token.NVL:
+                NVL nvlRunner = new NVL();
+                nvlRunner.run(token);
+                break;
+            case Token.SUBSTR:
+                SUBSTR substrRunner = new SUBSTR();
+                substrRunner.run(token);
+                break;
             case Token.OR:
                 OR ORRunner = new OR();
                 ORRunner.run(token);
@@ -83,6 +140,10 @@ public class Runner {
                 AND ANDRunner = new AND();
                 ANDRunner.run(token);
                 break;
+            case Token.NOT:
+                NOT NOTRunner = new NOT();
+                NOTRunner.run(token);
+                break;
             case Token.EQUAL:
                 EQUAL EQUALRunner = new EQUAL();
                 EQUALRunner.run(token);
@@ -90,6 +151,33 @@ public class Runner {
             case Token.NOTEQUAL:
                 NotEQUAL NotEQUALRunner = new NotEQUAL();
                 NotEQUALRunner.run(token);
+                break;
+
+            case Token.GREATER_THAN:
+                GreaterThan gtRunner = new GreaterThan();
+                gtRunner.run(token);
+                break;
+
+            case Token.GREATER_THAN_OR_EQUAL:
+                GreaterThanOrEqual gtoRunner = new GreaterThanOrEqual();
+                gtoRunner.run(token);
+                break;
+            case Token.IN:
+                IN inRunner = new IN();
+                inRunner.run(token);
+                break;
+            case Token.LIKE:
+                LIKE likeRunner = new LIKE();
+                likeRunner.run(token);
+                break;
+
+            case Token.LESS_THAN:
+                LessThan ltRunner = new LessThan();
+                ltRunner.run(token);
+                break;
+            case Token.LESS_THAN_OR_EQUAL:
+                LessThanOrEqual ltoRunner = new LessThanOrEqual();
+                ltoRunner.run(token);
                 break;
             case Token.CASE:
                 CASE CASERunner = new CASE();
@@ -115,6 +203,65 @@ public class Runner {
                 break;
         }
     }
+
+    private String tokenTreeAsString(List<Token> listToken, String strNivel) throws Exception{
+        String localStr = strNivel;
+        for(Token token : listToken){
+            if(token == null){
+                stringTree.append(localStr);
+                stringTree.append("null");
+                stringTree.append("\n");
+            }else{
+                stringTree.append(localStr);
+                stringTree.append(token.getValue());
+                stringTree.append("\n");
+                if(token.getChilds() == null){
+                    stringTree.append(localStr);
+                    stringTree.append("\t");
+                    stringTree.append("childs null");
+                    stringTree.append("\n");
+                    continue;
+                }
+                if(token.getChilds().size() == 0){
+                    stringTree.append(localStr);
+                    stringTree.append("\t");
+                    stringTree.append("no childs");
+                    stringTree.append("\n");
+                    continue;
+                }
+                if(token.getChilds().size() > 0){
+                    localStr = localStr+" | ";
+                    this.tokenTreeAsString(token.getChilds(), localStr);
+                }
+            }
+        }
+        return stringTree.toString();
+    }
+
+    /*private void printTokensTree(List<Token> listToken, String nivel){
+        String textToPrint = "";
+        String tokenValue = "";
+        Token token = null;
+        String currentLevel = nivel;
+        String nextLevel = null;
+        for(int i = 0; i<listToken.size();i++){
+            token = listToken.get(i);
+            textToPrint = String.format("%s %s",currentLevel, token.getValue());
+            stringTree.append(textToPrint+"\n");
+
+            if(token.getChilds() == null){
+                continue;
+            }
+            if(token.getChilds().size()>0){
+                nextLevel = currentLevel + " | ";
+                this.printTokensTree(token.getChilds(), nextLevel);
+            }
+
+        }
+    }
+    public void printTokensTree(){
+        this.printTokensTree(executionPlan,"");
+    }*/
 
 
 
